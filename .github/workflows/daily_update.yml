@@ -1,0 +1,40 @@
+name: Update KLSE Bank Chart
+
+on:
+  # Schedule: Runs at 12:00 UTC (8:00 PM Singapore)
+  # Mon(1) to Fri(5)
+  schedule:
+    - cron: '0 12 * * 1-5'
+  # Allows you to run this manually from the Actions tab for testing
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run generation script
+        run: python main.py
+
+      - name: Commit and push changes
+        # This step checks if index.html changed. If yes, it pushes it back to the repo.
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Daily Update: KLSE Banks Chart" && git push)
