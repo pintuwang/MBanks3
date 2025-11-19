@@ -4,7 +4,6 @@ import plotly.graph_objects as go
 from datetime import datetime
 
 # 1. Define Top 10 KLSE Banks (Tickers usually end in .KL)
-# Note: Market caps change, but these are the traditional heavyweights.
 tickers = {
     'Maybank': '1155.KL',
     'Public Bank': '1295.KL',
@@ -21,9 +20,9 @@ tickers = {
 def generate_chart():
     print("Fetching data...")
     
-    # 2. Fetch Data starting slightly before July 1 to ensure we capture the base date
-    # 'Adj Close' accounts for dividends and splits
-    data = yf.download(list(tickers.values()), start="2024-06-25")['Adj Close']
+    # --- THE FIX IS HERE ---
+    # We added 'auto_adjust=False' to ensure 'Adj Close' column exists
+    data = yf.download(list(tickers.values()), start="2024-06-25", auto_adjust=False)['Adj Close']
     
     # Filter to start exactly from or after July 1, 2024
     start_date = '2024-07-01'
@@ -55,7 +54,7 @@ def generate_chart():
         title=f"Relative Performance of Top 10 KLSE Banks (Base: {start_date} = 1.0)",
         xaxis_title="Date",
         yaxis_title="Relative Price (1.0 = No Change)",
-        hovermode="x unified", # Shows all values for a specific date on hover
+        hovermode="x unified", 
         template="plotly_white",
         legend_title="Click to Hide/Show",
         height=700
@@ -74,7 +73,6 @@ def generate_chart():
     )
 
     # 6. Export to HTML
-    # This file will be served by GitHub Pages
     print("Generating index.html...")
     fig.write_html("index.html")
     print("Done.")
