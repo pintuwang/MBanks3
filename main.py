@@ -103,20 +103,9 @@ COUNTRY_BANKS = {
             'DGB Financial':   '139130.KS',
         },
     },
-    'PH': {
-        'label': 'Philippines',
-        'banks': {
-            'BDO Unibank':   'BDOUF',
-            'Metrobank':     'MBTCF',
-            'BPI':           'BPHIF',
-            'Security Bank': 'SBKFF',
-            'RCBC':          'RCBCF',
-            'UnionBank':     'UBPFF',
-        },
-    },
 }
 
-COUNTRY_ORDER = ['MY', 'SG', 'ID', 'TH', 'VN', 'JP', 'KR', 'PH']
+COUNTRY_ORDER = ['MY', 'SG', 'ID', 'TH', 'VN', 'JP', 'KR']
 
 
 def generate_chart():
